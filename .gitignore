@@ -1,1 +1,20 @@
-target/
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+build
+
+# Maven
+target
+
+# Others
+Config.java
+google*
