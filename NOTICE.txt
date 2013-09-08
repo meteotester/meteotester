@@ -49,3 +49,4 @@ https://developer.forecast.io/
 http://openweathermap.org/api
 http://www.wunderground.com/weather/api/
 http://www.geonames.org/export/web-services.html
+http://aws.amazon.com/

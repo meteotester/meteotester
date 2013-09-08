@@ -9,11 +9,12 @@ This software uses the following thirdparty services:
 - forecast.io API
 - openweathermap.org API
 - wunderground.com API
+- geonames.org
 
 
 2.- CONFIGURE
 
-You need to manually edit default net.meteotester.config.Config.java file with your own identifiers and credentials.
+You need to manually replace default com.meteotester.config.Config.java file with your own configuration values, identifiers and credentials.
 
 
 3.- BUILD
