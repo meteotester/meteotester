@@ -1,0 +1,19 @@
+body {
+	padding-top: 50px;
+}
+
+.starter-template {
+	padding: 40px 15px;
+	text-align: justify;
+}
+
+#error {
+	color: red;
+	font-style: italic;
+	padding: 20px;
+}
+
+#loading {
+	margin: 0;
+	padding: 0;
+}

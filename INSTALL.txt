@@ -1,0 +1,47 @@
+
+How to install and deploy MeteoTester web application.
+-----------------------------------------------------
+
+1.- REQUIREMENTS
+
+This software uses the following thirdparty services:
+- S3 Amazon Web Service
+- forecast.io API
+- openweathermap.org API
+- wunderground.com API
+
+
+2.- CONFIGURE
+
+You need to manually edit default net.meteotester.config.Config.java file with your own identifiers and credentials.
+
+
+3.- BUILD
+
+With Maven: "mvn clean package" or "mvn clean install".
+This project uses the following thirdparty java libraries:
+aws-java-sdk (to use S3 for storage)
+commons-codec
+commons-lang
+commons-logging
+httpclient
+httpcore
+log4j
+json-path
+json-smart
+These dependencies are automatically managed by Maven.
+
+
+4.- DEPLOY 
+
+Deploy WAR file to a Servlet Container (like Tomcat7) in your server.
+
+
+5.- AND GO ON!
+
+You can use provided scripts as a first step to get automatic storage and analysis of incoming meteorological data. Much remains to be done.
+You can easily add any locations as your targets. Share your data with us if you want. And step into the wonderful world of big data analytics :) 
+The more samples the better!
+
+
+

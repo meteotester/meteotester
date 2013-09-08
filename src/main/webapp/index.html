@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description"
+	content="Testing and comparing weather forecasts">
+<meta name="keywords"
+	content="weather,forecast,accuracy,error,prediction,meteo,tester,forecast.io,openweathermap.org,wunderground.com,statistics">
+<meta name="author" content="">
+
+<title>MeteoTester (beta)</title>
+
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/starter-template.css" rel="stylesheet">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43465270-1', 'meteotester.com');
+  ga('send', 'pageview');
+
+</script>
+
+</head>
+
+<body>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="info.html">MeteoTester (beta)</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Weather search</a></li>
+					<li><a href="stats.html">Forecasts accuracy</a></li>
+					<li><a href="info.html">About MeteoTester</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+
+
+		</div>
+
+	</div>
+
+	<div class="container">
+
+		<div class="starter-template">
+			<!--   <p class="lead">The weather in <span id="place">Madrid</span></p>
+      -->
+			<form class="navbar-form" id="searchform">
+				Weather in <input id="place" type="text" class="span2">
+				<button type="submit" class="btn">Search</button>
+
+				<span id="loading"></span> <span id="error"></span> <span id="icons"></span>
+
+			</form>
+
+			<div id="chart"
+				style="min-width: 60%; max-width: 800px; max-height: 400px; margin: 0 auto;"></div>
+		</div>
+	</div>
+	<!-- /.container -->
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+	<script src="http://code.highcharts.com/highcharts-more.js"></script>
+	<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+	<script>  
+   
+    
+    createChart(place);
+    var position;
+    var place = $('#searchform :input').val();
+    initiate_geolocation();
+     $('#chart').ready(function() {
+    //	updateChartAjax("openweather"); 
+    	});
+    
+    function initiate_geolocation() {  
+        if (navigator.geolocation)  
+        {  
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query, handle_errors);  
+        }  
+       
+    }  
+    function handle_errors(error)  
+    {  
+        switch(error.code)  
+        {  
+            case error.PERMISSION_DENIED: alert("user did not share geolocation data");  
+            break;  
+            case error.POSITION_UNAVAILABLE: alert("could not detect current position");  
+            break;  
+            case error.TIMEOUT: alert("retrieving position timedout");  
+            break;  
+            default: alert("unknown error");  
+            break;  
+        }  
+    }  
+    
+    
+   
+    
+    function geocodeAjax(position) {
+    	$.ajax({
+    		//url: 'mock_geonames.json',
+    	    url: 'geocoder',
+    	    type: "GET",
+    	    dataType: "json",
+    	    data: {lat: position.coords.latitude, lon: position.coords.longitude},
+    	   
+    	    success: function(response) {
+    	    	
+    	    	 if (response.geonames[0] == null || response.geonames[0].adminName1 == null) {
+    	    		 $('#searchform :input').val("");
+    	    		 $('#loading').html('');
+    	    	    $('#error').html('Location not available');
+    	    	 }
+    	    	 else {
+    	    	 	place = response.geonames[0].adminName1+ ", "+response.geonames[0].countryName;
+    	    	 	$('#searchform :input').val(place);
+    	    	 	updateChartAjax("openweather");
+    	    	 }
+    	    	
+    	    },
+    	    error: function() {
+    	    	$('#searchform :input').val("");
+    	    	$('#loading').html('');
+    	    	$('#error').html('Location not available');
+    	    	
+    	    },
+    	    cache: true
+    	});
+    	return false;
+    }
+    
+    function handle_geolocation_query(position){  
+       	geocodeAjax(position);
+    }  
+    
+    
+     
+     
+    $(function () {
+    	
+    	
+    	$('#searchform').submit(function() {
+    		place = $('#searchform :input').val();
+    		updateChartAjax();
+     	    	
+    	    return false;  // <- cancel event
+    	});
+    	
+        
+    });
+    
+    function createChart(place) {
+    	$('#chart').hide();
+    	$('#chart').highcharts({
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Weather in '+place
+            },
+            subtitle: {text: 'Sources: openweathermap'},
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    formatter: function() {
+                        return this.value +'°C';
+                    },
+                    style: {
+                        color: 'rgb(0,0,0)'
+                    }
+                },
+                title: {
+                    text: 'Temperature',
+                    style: {
+                        color: 'rgb(0,0,0)'
+                    }
+                },
+                min: 0,
+                max: 40
+    
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Rainfall',
+                    style: {
+                        color: 'rgb(0,0,255)'
+                    }
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value +' mm';
+                    },
+                    style: {
+                        color: 'rgb(0,0,255)'
+                    }
+                },
+                min: 0,
+                max: 20,
+              opposite: true
+    
+            }],
+            tooltip: {
+                shared: true
+            },
+            
+            series: [{
+                name: 'Rainfall',
+                color: 'rgb(0,0,255)',
+                type: 'column',
+                yAxis: 1,
+                
+                tooltip: {
+                    valueSuffix: ' mm'
+                }
+    
+            }, {
+                name: 'Min. Temp.',
+                type: 'spline',
+                color: 'rgb(155, 0, 155)',
+                tooltip: {
+                    valueSuffix: ' ºC'
+                }
+    
+            }, {
+                name: 'Max. Temp.',
+                color: 'rgb(255,0,0)',
+                type: 'spline',
+                
+                tooltip: {
+                    valueSuffix: ' °C'
+                }
+            },{ 
+    			name: 'Rainfall error',
+    			type: 'errorbar',
+    			color: 'rgb(0,0,255)',
+    			yAxis: 1,
+    			
+    			tooltip: {
+    				pointFormat: '(Rainfall range: {point.low}-{point.high} mm)<br/>'
+    			}
+    		},
+    		 {
+    			name: 'Min. Temp. error',
+    			type: 'errorbar',
+    			color: 'rgb(155, 0, 155)',
+    			
+    			tooltip: {
+    				pointFormat: '(Min. Temp. range: {point.low}-{point.high}°C)<br/>'
+    			}
+    		},
+    		 {
+    			name: 'Max. Temp. error',
+    			type: 'errorbar',
+    			color: 'rgb(255,0,0)',
+    			tooltip: {
+    				pointFormat: '(Max. Temp. range: {point.low}-{point.high}°C)<br/>'
+    			}
+    		}
+           
+            
+            ]
+        });
+    	return false;
+    }
+    
+    function updateChartAjax(source) {
+    	var chart = $('#chart').highcharts();
+    	$('#loading').html('<img src="img/loading_icon.gif" width="50" height="50"/>');
+$.ajax({
+    url: 'weathersummary',
+    //url: 'mocks/weathersummary.json',
+    type: "GET",
+    dataType: "json",
+    data: (source!=null)?{q : place, source: source}:{q: place},
+   
+    success: function(data) {
+    	$('#error').html('');
+    	$('#loading').html('');
+    	$('#chart').show();
+        chart.series[0].setData(data.qpf);
+        chart.series[1].setData(data.mintemp);
+        chart.series[2].setData(data.maxtemp);
+        chart.xAxis[0].setCategories(data.days);
+        chart.series[3].setData(data.qpf_error);
+         chart.series[4].setData(data.mintemp_error);
+         chart.series[5].setData(data.maxtemp_error);
+      chart.setTitle({text: "Weather in "+data.place}, {text: "Sources: "+ data.sources.join(', ')});
+      $('#searchform :input').val(data.place);
+      
+      
+      $('#icons').html('');
+      $.each(data.icon, function() { 
+    	  $('#icons').append('<img src="img/'+this+'.png"/>');
+    	});
+      	if (source != null) {
+      		updateChartAjax(null);
+      	}
+    },
+    error: function() {
+    	$('#loading').html('');
+    	$('#error').html('Location not available');
+    	$('#chart').hide();
+    },
+    cache: false
+});
+	return false;
+	
+    }
+    
+   
+   
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description"
+	content="Testing and comparing weather forecasts">
+<meta name="keywords"
+	content="weather,forecast,accuracy,error,prediction,meteo,tester,forecast.io,openweathermap.org,wunderground.com,statistics">
+<meta name="author" content="">
+
+<title>MeteoTester</title>
+
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/starter-template.css" rel="stylesheet">
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43465270-1', 'meteotester.com');
+  ga('send', 'pageview');
+
+</script>
+
+<script src="js/jquery.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script>
+$(function () {
+        $('#chart1').highcharts({
+            title: {
+                text: 'Temperature Forecasts Error',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Source: meteotester.com',
+                x: -20
+            },
+            xAxis: {
+                 title: {
+                    text: 'days in advance'
+                },
+                categories: [1, 2, 3, 4, 5]
+            },
+            yAxis: {
+                title: {
+                    text: 'RMS Error (ºC)'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: '°C'
+            },
+            series: [{
+            	name: 'baseline',
+            	data: [1.901416476047427, 2.6024464015090247, 3.227486121839514, 3.24037034920393, 3.281650616569468]
+            	},{
+            	name: 'forecast.io',
+            	data: [2.4062116353615925, 2.385800734713866, 2.031226840876849, 1.8457471434288448, 1.8180836463007128]
+            	},{
+            	name: 'openweathermap.org',
+            	data: [3.887223373854391, 3.4131867804675844, 3.0423761225806367, 2.5036915167374256, 4.012410548656348]
+            	},{
+            	name: 'wunderground.com',
+            	data: [1.7194539072421902, 1.877848713148555, 1.983263304085802, 2.0441554316077406, 1.7541160386140584]
+            	}
+]
+        });
+    });
+    
+    
+
+
+$(function () {
+    $('#chart3').highcharts({
+        title: {
+            text: 'Precipitation Forecasts Error',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: meteotester.com',
+            x: -20
+        },
+        xAxis: {
+             title: {
+                text: 'days in advance'
+            },
+            categories: [1, 2, 3, 4, 5]
+        },
+        yAxis: {
+            title: {
+                text: 'RMS Error'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        series: [{
+        	name: 'baseline',
+        	data: [0.3396831102433787, 0.5222329678670935, 0.5773502691896257, 0.5773502691896257, 0.5547001962252291]
+        	},{
+        	name: 'forecast.io',
+        	data: [0.194504027843707, 0.2591524695326665, 0.2584683366364871, 0.26469658249586114, 0.40102546610478756]
+        	},{
+        	name: 'wunderground.com',
+        	data: [0.21769544118033513, 0.28837110534456223, 0.25819889744208757, 0.3779644730092272, 0.3198557373930702]
+        	}
+]
+    });
+});
+    
+</script>
+</head>
+
+<body>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">MeteoTester (beta)</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">Weather search</a></li>
+					<li class="active"><a href="#">Forecast accuracy</a></li>
+					<li><a href="info.html">About MeteoTester</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+
+	<div class="container">
+
+		<div class="starter-template">
+			<h3>How accurate are weather forecasts?</h3>
+
+			<p>
+				In the following charts forecast accuracy is presented in terms of <a
+					href="http://en.wikipedia.org/wiki/Root_mean_square#Root-mean-square_error">Root
+					Mean Square Error</a>. So lower values are better. And 0 would be
+				perfect score. A baseline benchmark is included corresponding to
+				trivial predictions: forecasts for the next 5 days being the same as
+				today's weather.
+			</p>
+
+			<p>Temperature forecasts error checks both min. and max.
+				temperature predictions in º Celsius:</p>
+			<div id="chart1"
+				style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			<!--  <p>Precipitation forecasts error applies to quantitative precipitation forecasts in mm/24h:</p>
+        <div id="chart2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        -->
+			<p>
+				Precipitation forecasts error applies to predicted probabilities
+				(range: 0 to 1). It is equivalent to the square root of <a
+					href="http://www.cawcr.gov.au/projects/verification/#BS">Brier
+					Score</a>.
+			</p>
+			<div id="chart3"
+				style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			<p>
+				Observed locations: <a
+					href="http://en.wikipedia.org/wiki/Barajas_Airport"><i>Madrid-Barajas
+						Airport, Madrid (Spain)</i></a>, <a
+					href="http://en.wikipedia.org/wiki/Atlantic_City_International_Airport"><i>Atlantic
+						City International Airport, New Jersey (USA)</i></a>, <a
+					href="http://en.wikipedia.org/wiki/Macau_International_Airport"><i>Macau
+						International Airport, (Macau)</i></a>
+
+			</p>
+			<p>
+				Period: <i>August 20th to September 5th 2013</i>.
+			</p>
+			<p>More data coming soon: weather sources, locations, accuracy
+				metrics, reports, challenges...</p>
+		</div>
+
+	</div>
+	<!-- /.container -->
+
+	<!--    <script src="js/jquery.js"></script>-->
+	<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
