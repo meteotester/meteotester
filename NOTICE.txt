@@ -1,0 +1,51 @@
+All source code in this MeteoTester release is distributed under the MIT license included in the file LICENSE.txt.
+
+MeteoTester project depends on a number of software packages that are developed and
+distributed by others. These third-party dependencies are listed below.
+
+----------------------
+
+This project require java libraries developed by:
+- The Apache Software Foundation (http://www.apache.org/)
+	Apache Commons (http://commons.apache.org)
+	Apache HttpComponents (http://hc.apache.org)
+	Apache log4j (http://logging.apache.org/log4j)
+	Apache Tomcat (http://tomcat.apache.org)
+
+- Amazon Web Services (http://aws.amazon.com/)
+	aws-java-sdk (https://github.com/aws/aws-sdk-java)
+
+- jayway (https://github.com/jayway):
+	JsonPath (https://github.com/jayway/JsonPath)
+
+- Uriel Chemouni (http://www.minidev.net)
+	Json-smart (http://code.google.com/p/json-smart/)
+
+
+All the software listed above is released under Apache License version 2:
+License can be found in http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+------
+
+This project includes JavaScript library jQuery (https://github.com/jquery/jquery), developed by jQuery Foundation (http://jquery.com):
+License can be found in https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
+
+------
+
+This project includes a web template (Javascripts, CSS and HTML) from Bootstrap (http://getbootstrap.com), developed by Mark Otto (http://twitter.com/mdo) and Jacob Thornton (http://twitter.com/fat)
+License can be found in http://www.apache.org/licenses/LICENSE-2.0.html
+
+------
+
+This project uses JavaScript libraries developed by Highcharts (http://www.highcharts.com) for free under the Creative Commons Attribution-NonCommercial 3.0 License.
+This License can be found in http://creativecommons.org/licenses/by-nc/3.0/
+IN ORDER TO USE THIS PROJECT FOR COMMERCIAL PURPOSES YOU HAVE TO PURCHASE A HIGHCHARTS LICENSE OR REPLACE HIGHCHARTS WITH ANOTHER CHART LIBRARY.
+
+------
+
+This project consumes the following Web APIs or services:
+https://developer.forecast.io/
+http://openweathermap.org/api
+http://www.wunderground.com/weather/api/
+http://www.geonames.org/export/web-services.html
