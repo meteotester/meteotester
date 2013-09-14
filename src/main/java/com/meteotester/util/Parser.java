@@ -176,7 +176,6 @@ public class Parser {
 
 		}
 
-		//result += forecast;
 		return result;		
 
 	}
