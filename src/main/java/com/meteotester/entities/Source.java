@@ -13,6 +13,8 @@ public class Source {
 	String jpMon;
 	String jpDay;
 	String[] jpVariables;
+	String jpIcon;
+	
 	
 	String domain;
 	
@@ -83,6 +85,13 @@ public class Source {
 	}
 	public void setJpVariables(String[] jpVariables) {
 		this.jpVariables = jpVariables;
+	}
+	
+	public String getJpIcon() {
+		return jpIcon;
+	}
+	public void setJpIcon(String jpIcon) {
+		this.jpIcon = jpIcon;
 	}
 	
 	public String getDomain() {

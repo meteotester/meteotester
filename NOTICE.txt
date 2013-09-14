@@ -48,5 +48,6 @@ This project consumes the following Web APIs or services:
 https://developer.forecast.io/
 http://openweathermap.org/api
 http://www.wunderground.com/weather/api/
+http://developer.worldweatheronline.com/
 http://www.geonames.org/export/web-services.html
 http://aws.amazon.com/

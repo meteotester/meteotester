@@ -159,23 +159,31 @@ public class Aggregator {
 		translator.put("clear", "01d");
 		translator.put("sunny", "01d");
 		translator.put("clear-day", "01d");
+		translator.put("Sunny", "01d");
 
 		translator.put("02d", "02d");
 		translator.put("partlycloudy", "02d");
 		translator.put("partlysunny", "02d");
 		translator.put("mostlysunny", "02d");
 		translator.put("partly-cloudy-day", "02d");
+		translator.put("Partly Cloudy", "02d");
+		
 
 		translator.put("03d", "03d");
 		translator.put("cloudy", "03d");
 		translator.put("mostlycloudy", "03d");
+		translator.put("Cloudy", "03d");
 
-		translator.put("04d", "04d");
-
+		translator.put("04d", "04d"); // broken clouds 5/8 to 7/8 clouds, or overcast 8/8
+		translator.put("Overcast", "04d");
+		
 		translator.put("09d", "09d"); // Shower rain
 		translator.put("rain", "09d");
+		translator.put("rain", "09d");
+		
 
 		translator.put("10d", "10d"); // rain
+		translator.put("Moderate rain", "10d");
 
 		translator.put("11d", "11d"); // thunderstorm
 		translator.put("tstorms", "11d");

@@ -2,8 +2,8 @@ meteotester
 ==============================
 
 MeteoTester is a project developed to aggregate and analyse weather information coming from multiple datasources, by storing, processing and comparing forecasts and observations.
-For the moment, it consumes data from [forecast.io][forecastio], [openweathermap.org][openweather] and [wunderground.com][wunderground] APIs.
-It uses [Amazon S3 Web Service][s3] as storage.
+For the moment, it consumes data from [forecast.io][forecastio], [openweathermap.org][openweather], [wunderground.com][wunderground] and [worldweatheronline.com][worldweatheronl] APIs.
+It uses [Amazon S3 Web Service][s3] as storage. And [Apache Hadoop][hadoop] for batch processing.
 
 
 Goals
@@ -26,8 +26,10 @@ Permission to modify and redistribute is granted under the terms of the MIT lice
 This project depends on a number of software packages that are developed and distributed by others. Please see the [NOTICE.txt] [notices] file for more information.
 
   [s3]: http://aws.amazon.com/es/s3/
+  [hadoop]: http://hadoop.apache.org
   [forecastio]: http://forecast.io
   [openweather]: http://openweathermap.org
+  [worldweatheronl]: http://www.worldweatheronline.com
   [wunderground]: http://www.wunderground.com
   [license]: LICENSE.txt
   [notices]: NOTICE.txt

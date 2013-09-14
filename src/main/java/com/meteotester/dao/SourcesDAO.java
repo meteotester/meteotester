@@ -28,6 +28,8 @@ public class SourcesDAO {
 		sources.put(source.getName(), source);
 		source = createSourceWunderground();
 		sources.put(source.getName(), source);
+		source = createSourceWorldweatheronl();
+		sources.put(source.getName(), source);
 
 		return sources;
 	}
@@ -59,8 +61,9 @@ public class SourcesDAO {
 		source.setJpLong(jpLong);
 		source.setJpUnixtime(jpUnixtime);
 		source.setJpVariables(jpVariables);
+		source.setJpIcon("$.daily.data[0].icon");
 		source.setUrl("https://api.forecast.io/forecast/"+Config.FORECASTIO_KEY+"/${COORDS}?units=si&exclude=minutely,hourly,alerts");
-		source.setDomain("forecastio");
+		source.setDomain("forecast.io");
 		
 		return source;
 	}
@@ -81,10 +84,11 @@ public class SourcesDAO {
 		source.setJpLong(jpLong);
 		source.setJpUnixtime(jpUnixtime);
 		source.setJpVariables(jpVariables);
-
+		source.setJpIcon("$.list[0].weather[0].icon");
+		
 		source.setUrl("http://api.openweathermap.org/data/2.5/forecast/daily?id=${ID}&units=metric&cnt=8&APPID="+Config.OPENWEATHER_KEY);
 		//source.setUrl("http://api.openweathermap.org/data/2.5/forecast/daily?q=${PLACE},${COUNTRY}&units=metric&cnt=8&APPID="+Config.OPENWEATHER_KEY);
-		source.setDomain("openweathermap");
+		source.setDomain("openweathermap.org");
 		return source;
 	}
 
@@ -101,10 +105,12 @@ public class SourcesDAO {
 
 		source.setJpUnixtime("$.forecast.simpleforecast.forecastday[1].date.epoch");
 		source.setJpVariables(jpVariables);
+		source.setJpIcon("$.forecast.simpleforecast.forecastday[0].icon");
+		
 		//source.setUrl("http://api.wunderground.com/api/"+Config.WUNDERGROUND_KEY+"/forecast10day/q/${COUNTRY}/${PLACE}.json");
 		source.setUrl("http://api.wunderground.com/api/"+Config.WUNDERGROUND_KEY+"/forecast10day/q/${COORDS}.json");
 
-		source.setDomain("wunderground");
+		source.setDomain("wunderground.com");
 		return source;
 	}
 	
@@ -131,6 +137,24 @@ public class SourcesDAO {
 
 	}
 
+	private Source createSourceWorldweatheronl() {
+		Source source = new Source();
+		source.setName("worldweatheronl");
+		source.setType("forecasts");
+		String[] jpVariables = {"mintemp,ºC,$.data.weather[1].tempMinC",
+				"maxtemp,ºC,$.data.weather[1].tempMaxC",
+				"qpf,mm (24h),$.data.weather[1].precipMM"
+		};
+
+
+		source.setJpVariables(jpVariables);
+		source.setJpIcon("$.data.weather[0].weatherDesc[0].value");
+		
+		source.setUrl("http://api.worldweatheronline.com/free/v1/weather.ashx?q=${COORDS}&format=json&num_of_days=6&cc=no&key="+Config.WORLDWEATHERONL_KEY);
+		source.setDomain("worldweatheronline.com");
+		return source;
+	}
+	
 	
 	public HashMap<String, Source> getForecastSources() {
 		//return (HashMap<String, Source>) getServletContext().getAttribute("sources");

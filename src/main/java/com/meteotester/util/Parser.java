@@ -84,39 +84,15 @@ public class Parser {
 		double[] values = mintemp;
 		Object value = 0;
 		
-		String jpUnixtime = source.getJpUnixtime();
+		
 		String[] jpVariables = source.getJpVariables();
 
-		Object epoch = JsonPath.read(json, jpUnixtime.replace("[1]", "[0]"));
-		long unixtime = Util.epoch2unixtime(epoch);
-		Date today=new Date(unixtime*1000);
+		Date today = parseDateInLocalTimeFromJson(json, source, 0);
 		
-		if (source.getName().equals("wunderground")) { //epoch in wunderground is UTC, not local
-			Integer day = JsonPath.read(json, "$.forecast.simpleforecast.forecastday[0].date.day");
-			Integer month = JsonPath.read(json, "$.forecast.simpleforecast.forecastday[0].date.month");
-			Integer year = JsonPath.read(json, "$.forecast.simpleforecast.forecastday[0].date.year");
-
-			String strDate=String.format("%02d", day) + "-"+ String.format("%02d", month) + "-" + year;
-			DateFormat df  = new SimpleDateFormat("dd-MM-yyyy");
-			try {
-				today = df.parse(strDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		else if (source.getName().equals("forecastio")) { //unixtime in forecastio is UTC, not local
-			Integer offset = JsonPath.read(json,"$.offset");
-			unixtime+=offset*3600;
-			today = new Date(unixtime*1000);
-		}
 		
+		String iconpath0 = source.getJpIcon();
 		for (int i=0; i<N; i++) {
-			String iconpath = "$.list["+i+"].weather[0].icon";
-			if (source.getName().equals("forecastio"))
-				iconpath = "$.daily.data["+i+"].icon";
-			else if (source.getName().equals("wunderground"))
-				iconpath = "$.forecast.simpleforecast.forecastday["+i+"].icon";
+			String iconpath = iconpath0.replaceFirst("\\[0\\]", "["+i+"]");
 			icon[i] = JsonPath.read(json,iconpath);
 			
 			for (int j=0; j<jpVariables.length; j++) {
@@ -177,30 +153,7 @@ public class Parser {
 		Forecast forecast = new Forecast(name, latitude, longitude,place.getName(), place.getCountry());
 
 		for (int i=1; i<=NS; i++) {
-			Object epoch = JsonPath.read(json, jpUnixtime.replace("[1]", "["+i+"]"));
-			long unixtime = Util.epoch2unixtime(epoch);
-			Date date=new Date(unixtime*1000);
-		
-			if (source.getName().equals("wunderground")) { //epoch in wunderground is UTC, not local
-				Integer day = JsonPath.read(json, "$.forecast.simpleforecast.forecastday["+i+"].date.day");
-				Integer month = JsonPath.read(json, "$.forecast.simpleforecast.forecastday["+i+"].date.month");
-				Integer year = JsonPath.read(json, "$.forecast.simpleforecast.forecastday["+i+"].date.year");
-
-				String strDate=String.format("%02d", day) + "-"+ String.format("%02d", month) + "-" + year;
-				DateFormat df  = new SimpleDateFormat("dd-MM-yyyy");
-				try {
-					date = df.parse(strDate);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else if (source.getName().equals("forecastio")) { //unixtime in forecastio is UTC, not local
-				Integer offset = JsonPath.read(json,"$.offset");
-				unixtime+=offset*3600;
-				date = new Date(unixtime*1000);
-			}
-			
+			Date date = parseDateInLocalTimeFromJson(json, source, i);
 			
 			forecast.setTargetdate(sdf.format(date));
 			forecast.setDaysbefore(i);
@@ -260,4 +213,47 @@ public class Parser {
 
 	}
 	
+	/* For today, set daysafter = 0, for tomorrow daysafter = 1, etc */
+	private static Date parseDateInLocalTimeFromJson(String json, Source source, int daysafter) { 
+		Date date = null;
+		
+		long unixtime = 0;
+		String jpUnixtime = source.getJpUnixtime();
+		if (jpUnixtime != null) {
+			Object epoch = JsonPath.read(json, jpUnixtime.replace("[1]", "["+daysafter+"]"));
+			unixtime = Util.epoch2unixtime(epoch);
+			date=new Date(unixtime*1000);
+		}
+		if (source.getName().equals("wunderground")) { //epoch in wunderground is UTC, not local
+			Integer day = JsonPath.read(json, "$.forecast.simpleforecast.forecastday["+daysafter+"].date.day");
+			Integer month = JsonPath.read(json, "$.forecast.simpleforecast.forecastday["+daysafter+"].date.month");
+			Integer year = JsonPath.read(json, "$.forecast.simpleforecast.forecastday["+daysafter+"].date.year");
+
+			String strDate=String.format("%02d", day) + "-"+ String.format("%02d", month) + "-" + year;
+			DateFormat df  = new SimpleDateFormat("dd-MM-yyyy");
+			try {
+				date = df.parse(strDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if (source.getName().equals("forecastio")) { //unixtime in forecastio is UTC, not local
+			Integer offset = JsonPath.read(json,"$.offset");
+			unixtime+=offset*3600;
+			date = new Date(unixtime*1000);
+		}
+		else if (source.getName().equals("worldweatheronl")) { //date in worldweatheronl is yyyy-MM-dd
+			DateFormat df  = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				date = df.parse((String) JsonPath.read(json, "$.data.weather["+daysafter+"].date"));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return date;
+		
+	}
 }

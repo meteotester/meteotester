@@ -9,6 +9,7 @@ This software uses the following thirdparty services:
 - forecast.io API
 - openweathermap.org API
 - wunderground.com API
+- worldweatheronline.com API
 - geonames.org
 
 
