@@ -91,39 +91,43 @@ public class Parser {
 		
 		
 		String iconpath0 = source.getJpIcon();
-		for (int i=0; i<N; i++) {
-			String iconpath = iconpath0.replaceFirst("\\[0\\]", "["+i+"]");
-			icon[i] = JsonPath.read(json,iconpath);
-			
-			for (int j=0; j<jpVariables.length; j++) {
-				String[] variable = jpVariables[j].split(",");
+		try {
+			for (int i=0; i<N; i++) {
+				String iconpath = iconpath0.replaceFirst("\\[0\\]", "["+i+"]");
+				icon[i] = JsonPath.read(json,iconpath);
 
-				if (variable[0].equals("qpf") || variable[0].equals("mintemp") || variable[0].equals("maxtemp")) {
-					if (variable[0].equals("qpf")) {
-						values = qpf;
-					} else if (variable[0].equals("mintemp")) {
-						values = mintemp;
-					} else if (variable[0].equals("maxtemp")) {
-						values = maxtemp;
-					}
+				for (int j=0; j<jpVariables.length; j++) {
+					String[] variable = jpVariables[j].split(",");
 
-					variable[2] = variable[2].replace("[1]", "["+i+"]");
-					try {
-						value = JsonPath.read(json,variable[2]);
-					}
-					catch (Exception e) { 
-						// this variable is optional in json like qpf in openweather
-						//e.printStackTrace();
-						value = 0;
-					}
+					if (variable[0].equals("qpf") || variable[0].equals("mintemp") || variable[0].equals("maxtemp")) {
+						if (variable[0].equals("qpf")) {
+							values = qpf;
+						} else if (variable[0].equals("mintemp")) {
+							values = mintemp;
+						} else if (variable[0].equals("maxtemp")) {
+							values = maxtemp;
+						}
 
-					values[i] = Double.valueOf(value.toString());
-					if (variable[0].equals("qpf") && source.getName().equals("forecastio"))
-						values[i]*=24;
-					
+						variable[2] = variable[2].replace("[1]", "["+i+"]");
+						try {
+							value = JsonPath.read(json,variable[2]);
+						}
+						catch (Exception e) { 
+							// this variable is optional in json like qpf in openweather
+							//e.printStackTrace();
+							value = 0;
+						}
+
+						values[i] = Double.valueOf(value.toString());
+						if (variable[0].equals("qpf") && source.getName().equals("forecastio"))
+							values[i]*=24;
+
+					}
 				}
-			}
 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		WeatherSummary summary = new WeatherSummary(mintemp, maxtemp, qpf);
@@ -152,30 +156,33 @@ public class Parser {
 		Object longitude = (jpLong == null)?null:JsonPath.read(json, jpLong);
 		Forecast forecast = new Forecast(name, latitude, longitude,place.getName(), place.getCountry());
 
-		for (int i=1; i<=NS; i++) {
-			Date date = parseDateInLocalTimeFromJson(json, source, i);
-			
-			forecast.setTargetdate(sdf.format(date));
-			forecast.setDaysbefore(i);
+		try {
+			for (int i=1; i<=NS; i++) {
+				Date date = parseDateInLocalTimeFromJson(json, source, i);
 
-			for (int j=0; j<jpVariables.length; j++) {
-				String[] variable = jpVariables[j].split(",");
-				forecast.setVariable(variable[0]);
-				forecast.setUnits(variable[1]);
+				forecast.setTargetdate(sdf.format(date));
+				forecast.setDaysbefore(i);
 
-				variable[2] = variable[2].replace("[1]", "["+i+"]");
-				try {
-					forecast.setValue(JsonPath.read(json,variable[2]));
+				for (int j=0; j<jpVariables.length; j++) {
+					String[] variable = jpVariables[j].split(",");
+					forecast.setVariable(variable[0]);
+					forecast.setUnits(variable[1]);
+
+					variable[2] = variable[2].replace("[1]", "["+i+"]");
+					try {
+						forecast.setValue(JsonPath.read(json,variable[2]));
+					}
+					catch (Exception e) { // this variable is optional in json
+						forecast.setValue(0);
+					}
+
+					result += forecast;
 				}
-				catch (Exception e) { // this variable is optional in json
-					forecast.setValue(0);
-				}
 
-				result += forecast;
 			}
-
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
-
 		return result;		
 
 	}
