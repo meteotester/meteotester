@@ -150,7 +150,7 @@ public class SourcesDAO {
 		source.setJpVariables(jpVariables);
 		source.setJpIcon("$.data.weather[0].weatherDesc[0].value");
 		
-		source.setUrl("http://api.worldweatheronline.com/free/v1/weather.ashx?q=${COORDS}&format=json&num_of_days=6&cc=no&key="+Config.WORLDWEATHERONL_KEY);
+		source.setUrl("http://api.worldweatheronline.com/free/v1/weather.ashx?q=${COORDS}&format=json&num_of_days="+Config.NUM_DAYS_WEB+"&cc=no&key="+Config.WORLDWEATHERONL_KEY);
 		source.setDomain("worldweatheronline.com");
 		return source;
 	}
