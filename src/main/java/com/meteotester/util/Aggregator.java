@@ -180,10 +180,15 @@ public class Aggregator {
 		translator.put("09d", "09d"); // Shower rain
 		translator.put("rain", "09d");
 		translator.put("rain", "09d");
+		translator.put("Moderate or heavy rain shower", "09d");
 		
 
 		translator.put("10d", "10d"); // rain
 		translator.put("Moderate rain", "10d");
+		translator.put("Patchy rain nearby", "10d");
+		translator.put("Light rain", "10d");
+		translator.put("Light rain shower", "10d");
+		
 
 		translator.put("11d", "11d"); // thunderstorm
 		translator.put("tstorms", "11d");
