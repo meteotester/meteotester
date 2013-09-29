@@ -229,7 +229,8 @@
                 yAxis: 1,
                 
                 tooltip: {
-                    valueSuffix: ' mm'
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b><br/>'
+
                 }
     
             }, {
@@ -237,7 +238,8 @@
                 type: 'spline',
                 color: 'rgb(155, 0, 155)',
                 tooltip: {
-                    valueSuffix: ' ºC'
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f} ºC </b><br/>'
+
                 }
     
             }, {
@@ -246,7 +248,8 @@
                 type: 'spline',
                 
                 tooltip: {
-                    valueSuffix: ' °C'
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.1f} ºC</b><br/>'
+
                 }
             },{ 
     			name: 'Rainfall error',
@@ -255,7 +258,7 @@
     			yAxis: 1,
     			
     			tooltip: {
-    				pointFormat: '(Rainfall range: {point.low}-{point.high} mm)<br/>'
+    				pointFormat: '(Rainfall range: {point.low:.1f}-{point.high:.1f} mm)<br/>'
     			}
     		},
     		 {
@@ -264,7 +267,7 @@
     			color: 'rgb(155, 0, 155)',
     			
     			tooltip: {
-    				pointFormat: '(Min. Temp. range: {point.low}-{point.high}°C)<br/>'
+    				pointFormat: '(Min. Temp. range: {point.low:.1f}-{point.high:.1f}°C)<br/>'
     			}
     		},
     		 {
@@ -272,7 +275,7 @@
     			type: 'errorbar',
     			color: 'rgb(255,0,0)',
     			tooltip: {
-    				pointFormat: '(Max. Temp. range: {point.low}-{point.high}°C)<br/>'
+    				pointFormat: '(Max. Temp. range: {point.low:.1f}-{point.high:.1f}°C)<br/>'
     			}
     		}
            

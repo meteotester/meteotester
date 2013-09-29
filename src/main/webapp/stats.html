@@ -59,7 +59,8 @@ $(function () {
                 }]
             },
             tooltip: {
-                valueSuffix: '°C'
+                valueSuffix: '°C',
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f} ºC</b><br/>'
             },
             series: [{
             	name: 'baseline',
@@ -109,7 +110,9 @@ $(function () {
             }]
         },
         tooltip: {
-            valueSuffix: ''
+            valueSuffix: '',
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.4f} </b><br/>'
+
         },
         series: [{
         	name: 'baseline',
