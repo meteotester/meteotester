@@ -308,12 +308,27 @@ $.ajax({
          chart.series[5].setData(data.maxtemp_error);
       chart.setTitle({text: "Weather in "+data.place}, {text: "Sources: "+ data.sources.join(', ')});
       $('#searchform :input').val(data.place);
+         
+      $('#icons').html('Today: ');
       
+      var maxval = 0;
+      $.each(data.icon, function() {  
+    	  var lastval = $('#icons img[src="img/'+this+'.png"]').css('opacity');
+    	  var step = 1/data.icon.length;
+    	  if (lastval) {
+    		  var newval = parseFloat(lastval)+step;
+    		  $('#icons img[src="img/'+this+'.png"]').css('opacity', newval).attr("title", parseInt(newval*100) + "% consensus");
+    		  if (newval > 0.5)
+    			  $('#icons img[src="img/'+this+'.png"]').css('border', "2px dotted black");
+    		  maxval = (newval>=maxval)?newval:maxval;
+    	  }
+    	  else	 
+    	  	$('#icons').append('<img src="img/'+this+'.png" style="opacity:'+step+'" title="'+parseInt(step*100)+'% consensus"/>');
+      });
+      if (maxval <= 0.5) {
+    	  	$('#icons').append(' <span style="padding:1%;"> = </span> <span style="font-size:1.5em;"><strong> ? </strong></span>');
+      }
       
-      $('#icons').html('');
-      $.each(data.icon, function() { 
-    	  $('#icons').append('<img src="img/'+this+'.png"/>');
-    	});
       	if (source != null) {
       		updateChartAjax(null);
       	}

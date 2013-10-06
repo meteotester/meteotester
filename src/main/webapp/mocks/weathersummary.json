@@ -92,5 +92,5 @@
      "subtitle": {"text": "New sub Title3"},
      "sources": ["forecast.io", "wundeground.com"],
      "place": "Madrid (ES)",
-     "icon": ["02d", "02d", "02d"]
+     "icon": ["01d", "02d", "02d", "04d"]
 }
