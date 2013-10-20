@@ -1,0 +1,4 @@
+- Optimize layout for mobile devices
+- Change implementation of median aggregator to allow null values.
+- Support new metrics fore precipitation forecasts like SEEPS, AUC
+- Replace HighCharts by an opensource alternative
