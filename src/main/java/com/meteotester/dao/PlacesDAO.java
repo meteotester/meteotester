@@ -30,6 +30,14 @@ public class PlacesDAO {
 		place = new Place(4503665, "Atlantic City", "US", "39.458,-74.577"); //Atlantic City international airport US
 		places.put(place.getName(), place);
 		
+		place = new Place(993800, "Johannesburg", "ZA", "-25.98941, 28.14079"); //Johannesburg international airport
+		places.put(place.getName(), place);
+		
+		place = new Place(3871336, "Santiago de Chile", "CL", "-33.39298, -70.7858"); //Santiago de Chile international airport
+		places.put(place.getName(), place);
+		
+		place = new Place(2173964, "Melbourne", "AU", "-37.6704, 144.8493"); //Melbourne international airport
+		places.put(place.getName(), place);
 		
 		return places;
 	}

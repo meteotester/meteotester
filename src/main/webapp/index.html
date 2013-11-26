@@ -193,9 +193,7 @@
                     style: {
                         color: 'rgb(0,0,0)'
                     }
-                },
-                min: 0,
-                max: 40
+                }
     
             }, { // Secondary yAxis
                 gridLineWidth: 0,
@@ -305,7 +303,10 @@ $.ajax({
         chart.xAxis[0].setCategories(data.days);
         chart.series[3].setData(data.qpf_error);
          chart.series[4].setData(data.mintemp_error);
-         chart.series[5].setData(data.maxtemp_error);
+         chart.series[5].setData(data.maxtemp_error);  
+         
+         chart.yAxis[0].setExtremes(Math.min.apply(null, data.mintemp)-5, Math.max.apply(null, data.maxtemp)+5);
+         
       chart.setTitle({text: "Weather in "+data.place}, {text: "Sources: "+ data.sources.join(', ')});
       $('#searchform :input').val(data.place);
          
