@@ -18,5 +18,5 @@ build
 target
 
 # Others
-Config.java
+#Config.java
 google*
