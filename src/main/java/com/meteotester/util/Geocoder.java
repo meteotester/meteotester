@@ -1,5 +1,8 @@
 package com.meteotester.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.apache.log4j.Logger;
 
 
@@ -16,6 +19,12 @@ public class Geocoder {
 		//String filename = "/home/milhouse/json_geocoder/geocoder.json";
 		//String json = Util.getContentFromFile(filename);
 		
+		try {
+			query = URLEncoder.encode(query, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String sURL = "http://api.openweathermap.org/data/2.5/find?q="+query+"&cnt=0&APPID="+Config.OPENWEATHER_KEY;
 		String json = Util.getContentFromURL(sURL);
 		log.debug(sURL);
